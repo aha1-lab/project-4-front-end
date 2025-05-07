@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Navbar from "./components/Navbar";
+
+import { Container } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import useLocalStorage from "use-local-storage";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", false);
+  const [searchName, setSearchName] = useState("")
+
+  useEffect(() => {
+    const htmlElement = document.querySelector('html');
+    htmlElement.setAttribute('data-bs-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className={`App ${darkMode ? "theme-dark" : "theme-light"}`}>
+      <Container className="py-4">
+        <div className="container-fluid">
+          <Navbar toggleTheme={toggleTheme} darkMode={darkMode}/>
+          <div className="row">
+            <div className="col-auto col-sm-2 p-0">
+              {/* <Sidebar /> */}
+            </div>
+            <div className="col">
+              <main className="p-3">
+                
+                <Routes>
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/login" element={<Login />} />
+                </Routes>
+              </main>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
 }
 
-export default App
+export default App;
