@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
+import Homepage from "./pages/Homepage";
 
 import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
@@ -10,7 +11,6 @@ import useLocalStorage from "use-local-storage";
 
 function App() {
   const [darkMode, setDarkMode] = useLocalStorage("darkMode", false);
-  const [searchName, setSearchName] = useState("")
 
   useEffect(() => {
     const htmlElement = document.querySelector('html');
@@ -20,6 +20,8 @@ function App() {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
+
+
 
   return (
     <div className={`App ${darkMode ? "theme-dark" : "theme-light"}`}>
@@ -34,6 +36,7 @@ function App() {
               <main className="p-3">
                 
                 <Routes>
+                  <Route path="/" element={<Homepage/>} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
                 </Routes>
@@ -42,6 +45,8 @@ function App() {
           </div>
         </div>
       </Container>
+      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+    </div>
     </div>
   );
 }
