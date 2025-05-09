@@ -1,11 +1,20 @@
 import React from "react";
-import { Card, Dropdown } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
-function BoundingBoxDetails({ box, classes }) {
+function BoundingBoxDetails({ box, classes, handleUpdateBoxColor, boxIndex, deleteBox }) {
 
   const handleClassChange = (event)=>{
-      console.log(event.target.value)
+      const selectedClass = event.target.value;
+      const index = event.target.selectedIndex - 1;
+      box.color = classes[index].color;
+      handleUpdateBoxColor(boxIndex, index);
   }
+
+  const handleDelete = ()=>{
+    deleteBox(boxIndex);
+  };
+
+
   return (
     <Card>
       <Card.Body className="d-flex flex-column">
@@ -16,14 +25,13 @@ function BoundingBoxDetails({ box, classes }) {
           <select onChange={handleClassChange}>
             <option></option>
             {classes.map((cls, index) => (
-              <>
-                <option key={index} href="#">
-                  {cls}
+                <option key={index}>
+                  {cls.name}
                 </option>
-              </>
             ))}
           </select>
         </div>
+        <Button onClick={handleDelete}>🗑️</Button>
       </Card.Body>
     </Card>
   );

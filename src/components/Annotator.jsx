@@ -58,8 +58,9 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
       const y1 = Math.min(startPoint.y, endPoint.y);
       const x2 = Math.max(startPoint.x, endPoint.x);
       const y2 = Math.max(startPoint.y, endPoint.y);
+      const color = 'green';
       if (x1 !== x2 && y1 !== y2) {
-        setBoxesList([...boxesList, { x1, y1, x2, y2 }]);
+        setBoxesList([...boxesList, { x1, y1, x2, y2, color }]);
       }
       setIsPressing(false);
       setStartPoint(null);
@@ -67,6 +68,11 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
     //   console.log("boxesList: ", boxesList);
     }
   };
+  
+  // Source: https://stackoverflow.com/questions/49898749/how-can-i-prevent-drag-and-drop-images-in-a-react-app
+  const preventDragHandler = (e) => {
+    e.preventDefault();
+  }
 
   // Source: https://medium.com/@na.mazaheri/dynamically-drawing-shapes-on-canvas-with-fabric-js-in-react-js-8b9c42791903
   return (
@@ -90,6 +96,7 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onDragStart={preventDragHandler}
           />
 
           {isPressing && startPoint && endPoint && (
@@ -146,7 +153,7 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
                 (imageReference.current?.getBoundingClientRect().height /
                   imageSize.height || 1)
               }px`,
-              border: "2px solid red",
+              border: `2px solid ${box.color}`,
               pointerEvents: "none",
             }}
           />
