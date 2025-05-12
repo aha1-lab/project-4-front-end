@@ -22,7 +22,7 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
       image.addEventListener("load", handleLoad);
       return () => image.removeEventListener("load", handleLoad);
     }
-  }, [sourceImage]);
+  }, [`${import.meta.env.VITE_BACK_END_SERVER_URL}/images/${sourceImage.imageName}`]);
 
   // Source: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
   const getPixelPositionInImage = (x, y) => {
@@ -60,12 +60,21 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
       const y2 = Math.max(startPoint.y, endPoint.y);
       const color = 'green';
       if (x1 !== x2 && y1 !== y2) {
-        setBoxesList([...boxesList, { x1, y1, x2, y2, color }]);
+        const newBox = {
+          x1:x1,
+          y1:y1,
+          x2:x2,
+          y2:y2,
+          imageId: sourceImage.id,
+          classId: "",
+          className: "",
+          color: color,
+        }
+        setBoxesList([...boxesList, newBox]);
       }
       setIsPressing(false);
       setStartPoint(null);
       setEndPoint(null);
-    //   console.log("boxesList: ", boxesList);
     }
   };
   
@@ -90,7 +99,7 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
         >
           <img
             ref={imageReference}
-            src={sourceImage}
+            src={`${import.meta.env.VITE_BACK_END_SERVER_URL}/images/${sourceImage.imageName}`}
             alt="Annotate me"
             style={{ maxWidth: "100%", height: "auto", cursor: "crosshair" }}
             onMouseDown={handleMouseDown}

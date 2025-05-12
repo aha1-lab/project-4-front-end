@@ -3,9 +3,9 @@ import { authContext } from "../context/AuthContext";
 import axios from "axios";
 import { Link } from "react-router";
 import Annotator from "../components/Annotator";
-import img from "../assets/plyfly.jpg";
 import { Button, Row, Col } from "react-bootstrap";
 import BoundingBoxDetails from "../components/BoundingBoxDetails";
+import { addAnnotation, deleteAnnotation, getAnnotationList } from "../services/annotationService";
 
 function Homepage() {
   const projectId = 1;
@@ -27,6 +27,8 @@ function Homepage() {
       setImageList(list);
       if(list.length > 0) {
       setCurrentImage(list[0]);
+      const annotationList = await getAnnotationList(list[0].id);
+      setBoxesList(annotationList);
       }
     } catch (error) {
       console.log(error);
@@ -38,7 +40,7 @@ function Homepage() {
   }, []);
 
   // Source: https://stackoverflow.com/questions/60766094/using-react-hooks-how-can-i-update-an-object-that-is-being-passed-to-a-child-vi
-  const handleUpdateBoxColor = async(index, classId) => {
+  const handleUpdateBoxClass = async(index, classId) => {
     const prevBox = () => {
       const newBoxes = [...boxesList];
       newBoxes[index] = {
@@ -46,51 +48,55 @@ function Homepage() {
         color: classes[classId].color,
         imageId: currentImage.id,
         classId: classId,
-        className: classes[classId].name
+        className: classes[classId].name,
       };
       return newBoxes;
     };
     const boxes = prevBox();
+    boxes[index].imageId= currentImage.id;
+    boxes[index].classId= classId;
+    boxes[index].className= classes[classId].name;
+    boxes[index].color= classes[classId].color;
     setBoxesList(boxes);
-    const annotationData = {
-      x1:boxes[index].x1,
-      y1:boxes[index].y1,
-      x2:boxes[index].x2,
-      y2:boxes[index].y2,
-      imageId: currentImage.id,
-      classId: classId,
-      className: classes[classId].name,
-      color: classes[classId].color,
-    }
-    console.log(annotationData);
+    // console.log(boxes[index]);
     try {
-      const annotation = await axios.post("http://127.0.0.1:5000/annotations", annotationData)
+      // const annotation = await addAnnotation(boxes[index]);
+      const annotation = await axios.post(`http://localhost:5000/annotations`, boxes[index]);
       console.log(annotation.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const deleteBox = (index) => {
-    const modifiedBoxes = [...boxesList];
-    modifiedBoxes.splice(index, 1);
-    setBoxesList(modifiedBoxes);
+  const deleteBox = async(index) => {
+    await deleteAnnotation(index);
+    const annotationList = await getAnnotationList(imageList[currentImageIndex].id);
+    setBoxesList(annotationList);
   };
 
-  const goLeft = () => {
+  const goLeft = async() => {
     if (currentImageIndex > 0) {
       const newImageIndex = currentImageIndex - 1;
       setCurrentImageIndex(newImageIndex);
       setCurrentImage(imageList[newImageIndex]);
       setBoxesList([]);
+      try {
+        const annotationList = await getAnnotationList(imageList[newImageIndex].id);
+        setBoxesList(annotationList);
+      } catch (error) {
+        console.log(error);
+      }
+      
     }
   };
-  const goRight = () => {
+  const goRight = async() => {
     if (currentImageIndex < imageList.length - 1) {
       const newImageIndex = currentImageIndex + 1;
       setCurrentImageIndex(newImageIndex);
       setCurrentImage(imageList[newImageIndex]);
       setBoxesList([]);
+      const annotationList = await getAnnotationList(imageList[newImageIndex].id);
+      setBoxesList(annotationList);
     }
   };
 
@@ -133,7 +139,7 @@ function Homepage() {
             <Col sm={9}>
             {currentImage && (
               <Annotator
-                sourceImage={`http://127.0.0.1:5000/images/${currentImage.imageName}`}
+                sourceImage={currentImage}
                 boxesList={boxesList}
                 setBoxesList={setBoxesList}
               />
@@ -146,9 +152,9 @@ function Homepage() {
                   <BoundingBoxDetails
                     box={box}
                     classes={classes}
-                    handleUpdateBoxColor={handleUpdateBoxColor}
+                    handleUpdateBoxClass={handleUpdateBoxClass}
                     boxIndex={index}
-                    deleteBox={deleteBox}
+                    deleteBox={()=>{deleteBox(box.id)}}
                   />
                 </div>
               ))}
