@@ -7,6 +7,7 @@ import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 import CreateProject from "./pages/CreateProject";
+import ProjectList from "./pages/ProjectList";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/create" element={<CreateProject/>}/>
+                  <Route path="/ProjectList" element={<ProjectList/>}/>
                 </Routes>
               </main>
             </div>
@@ -46,6 +48,7 @@ function App() {
       </Container>
     </div>
   );
+
 }
 
 export default App;
