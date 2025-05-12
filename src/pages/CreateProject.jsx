@@ -1,69 +1,100 @@
-import React , {useState,useEffect} from 'react'
+import { useState,useContext } from 'react';
+import { authContext } from '../context/AuthContext';
+import axios from 'axios';
 
 function CreateProject() {
 
-    const [projectForm, setProjectForm] = useState([])
+    const { user } = useContext(authContext)
+    const token = localStorage.getItem('token')
 
-    const handleSubmet = ()=>{
+    const [projectForm, setProjectForm] = useState({
+        name: '',
+        description: '',
+        type: ''
+    });
 
-    }
-  return (
-    <div>
-        <form onSubmit={handleSubmet}>
-            <div>
-            <label>
-                Name: 
+    const [message, setMessage] = useState('');
 
-            </label>
-            <br />
-            <input
-                className='formControl'
-                type='text'
-                name='name'
-                id='name'
-                value={projectForm.name}
-                onChange={handleSubmet}>
-            </input>
-            </div>
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProjectForm(prevForm => ({
+            ...prevForm,
+            [name]: value
+        }));
+    };
 
-            <div>
-            <label>
-                Decription: 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:3000/projects', projectForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-            </label>
-            <br />
-            <input
-                className='formControl'
-                type='text'
-                name='description'
-                id='description'
-                value={projectForm.description}
-                onChange={handleSubmet}>
-            </input>
-            </div>
+            console.log('Project created:', response.data);
 
-            <div>
-            <label>
-                Type: 
+            setProjectForm({
+                name: '',
+                description: '',
+                type: ''
+            });
 
-            </label>
-            <br />
-            <input
-                className='formControl'
-                type='text'
-                name='type'
-                id='type'
-                value={projectForm.type}
-                onChange={handleSubmet}>
-            </input>
-            </div>
+            setMessage('Project created successfully!');
 
-            <button>Submit</button>
+            setTimeout(() => setMessage(''), 3000);
 
-        </form>
-      
-    </div>
-  )
+        } catch (error) {
+            console.error('Error creating project:', error);
+            setMessage('Failed to create project.');
+            setTimeout(() => setMessage(''), 3000);
+        }
+    };
+
+    return (
+        <div>
+            {message && <p style={{ color: 'green' }}>{message}</p>}
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Name:</label>
+                    <br />
+                    <input
+                        className='formControl'
+                        type='text'
+                        name='name'
+                        value={projectForm.name}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>Description:</label>
+                    <br />
+                    <input
+                        className='formControl'
+                        type='text'
+                        name='description'
+                        value={projectForm.description}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div>
+                    <label>Type:</label>
+                    <br />
+                    <input
+                        className='formControl'
+                        type='text'
+                        name='type'
+                        value={projectForm.type}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <button type='submit'>Submit</button>
+            </form>
+        </div>
+    );
 }
 
-export default CreateProject
+export default CreateProject;
