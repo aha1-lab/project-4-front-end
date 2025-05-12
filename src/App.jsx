@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
+import CreateProject from "./pages/CreateProject";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Routes>
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/create" element={<CreateProject/>}/>
                 </Routes>
               </main>
             </div>
