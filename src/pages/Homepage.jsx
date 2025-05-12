@@ -1,3 +1,4 @@
+
 import { useContext, useEffect, useState } from "react";
 import { authContext } from "../context/AuthContext";
 import axios from "axios";
@@ -7,7 +8,10 @@ import { Button, Row, Col } from "react-bootstrap";
 import BoundingBoxDetails from "../components/BoundingBoxDetails";
 import { addAnnotation, deleteAnnotation, getAnnotationList } from "../services/annotationService";
 
+
+
 function Homepage() {
+
   const projectId = 1;
   const [boxesList, setBoxesList] = useState([]);
   const [imageList, setImageList] = useState(null);
@@ -100,8 +104,10 @@ function Homepage() {
     }
   };
 
+
   return (
     <div>
+
       {imageList && (
         <>
           <Row>
@@ -162,8 +168,11 @@ function Homepage() {
           </Row>
         </>
       )}
+
     </div>
   );
 }
 
+
 export default Homepage;
+

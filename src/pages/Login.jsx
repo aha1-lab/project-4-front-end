@@ -30,6 +30,7 @@ function Login() {
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
           validateToken()
           navigate("/")
+
       }
       catch(err){
           console.log(err)
