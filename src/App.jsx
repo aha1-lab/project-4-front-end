@@ -2,10 +2,12 @@ import { Routes, Route } from "react-router";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
+import projectList from "./pages/projectList";
 
 import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
+import ProjectDetails from "./pages/ProjectDetails";
 
 
 function App() {
@@ -32,10 +34,12 @@ function App() {
             </div>
             <div className="col">
               <main className="p-3">
-                
+
                 <Routes>
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/ProjectList" element={<projectList/>}/>
+                  <Route path="/ProjectDetails" element={<ProjectDetails/>}/>
                 </Routes>
               </main>
             </div>
