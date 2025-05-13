@@ -21,7 +21,6 @@ function Signup() {
   }
       const navigate = useNavigate()
 
-  const {user} = useContext(authContext)
 
   const {userId} = useParams();
 
@@ -34,7 +33,7 @@ function Signup() {
         navigate(`persons/${userId}`)
       }
       else{
-        const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/sign-up`, formData);
+        const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/users/sign-up`, formData);
         navigator("/login");
       }
     } catch (err) {
