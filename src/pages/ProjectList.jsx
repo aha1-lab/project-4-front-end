@@ -1,49 +1,42 @@
-import {useContext,useEffect,useState} from 'react'
-import axios from 'axios'
-
-
-
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { getIndex } from "../services/ProjectService";
+import ProjectCard from "../components/ProjectCard";
+import { Row, Col } from "react-bootstrap";
 
 function ProjectList() {
+  const [formData, setFormData] = useState(null);
 
-    const [formData, setFormData] = useState(null)
+  const [error, setError] = useState(null);
 
-    const [error, setError] = useState(null)
+  const getProjectList = async()=>{
+    try {
+      const response = await getIndex();
+        setFormData(response);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
 
 
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/ProjectList`);
-                setFormData(response.data);
-            } catch (error) {
-                setError(error.message);
-            }
-        }
-        fetchData();
-    }, []);
-
+  useEffect(() => {
+    getProjectList();
+  }, []);
 
   return (
     <>
-        <h2>Project Lists</h2>
-
-      {/* { */}
-        {/* // formData && ( */}
-            <div>
-                <ul>
-                    <li>Project Name: {formData.name}</li>
-                    <li>Project Description: {formData.description}</li>
-                    <li>Project Type: {formData.type}</li>
-                </ul>
-            </div>
-        {/* // ) */}
-
-      {/* } */}
+      <h2>Project Lists</h2>
+      <Row md={2} xs={1} lg={3} className="g-3">
+        {formData &&
+          formData.map((project) => (
+            <Col key={project.id}>
+              <ProjectCard project={project} getProjectList={getProjectList} />
+            </Col>
+          ))}
+      </Row>
     </>
-  )
+  );
 }
 
-export default ProjectList
+export default ProjectList;

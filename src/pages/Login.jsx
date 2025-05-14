@@ -2,7 +2,7 @@ import {useState, useContext} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
 import { authContext } from '../context/AuthContext'
-
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
       const [formData, setFormData] = useState({
@@ -21,14 +21,16 @@ function Login() {
       e.preventDefault()
       try{
           const response = await axios.post(`http://127.0.0.1:5000/users/sign-in`,formData)
-          console.log(response.data)
+          // console.log("AAAA ",response.data)
           localStorage.setItem("token",response.data.token)
-          // const userInfo = {
-          //   username: response.data.user.username,
-          //   mode: response.data.user.mode,
-          // };
-          // localStorage.setItem("userInfo", JSON.stringify(userInfo));
-          // validateToken()
+          const decoded = jwtDecode(response.data.token)
+          // console.log("Decoded JWT: ", decoded)
+          const userInfo = {
+            username: decoded.payload.username,
+            id: decoded.payload.id,
+          };
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          validateToken()
           navigate("/")
 
       }

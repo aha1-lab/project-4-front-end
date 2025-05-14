@@ -19,8 +19,8 @@ function UserProvider(props){
         // first condition if there is a valid token
             try{
                 // console.log(token)
-                const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/verify-token`,token)
-                console.log(response.data)
+                const response = await axios.post(`http://localhost:5000/verify-token`,{},{headers:{Authorization:`Bearer ${token}`}})
+                // console.log(response.data)
                 setUser(response.data)
             }
             // second condition if the token is not valid

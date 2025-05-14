@@ -10,7 +10,6 @@ import {
   Form,
 } from "react-bootstrap";
 
-
 function Navbar({ toggleTheme, darkMode }) {
   const { user, logout } = useContext(authContext);
 
@@ -28,6 +27,16 @@ function Navbar({ toggleTheme, darkMode }) {
               </Nav.Link>
               <Nav.Link to="/signup" as={NavLink}>
                 Sign Up
+              </Nav.Link>
+            </>
+          )}
+          {user && (
+            <>
+              <Nav.Link to="/projects" as={NavLink}>
+                Projects
+              </Nav.Link>
+              <Nav.Link to="/createProject" as={NavLink}>
+                Creare Project
               </Nav.Link>
             </>
           )}
