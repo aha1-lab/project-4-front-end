@@ -109,7 +109,7 @@ function CreateProject() {
         </Dropdown.Menu>
       </Dropdown>
       <Button onClick={handleSubmit} className="mt-3" variant="primary">
-        {projectId === null ? "Create New Project" : "Update Project"}
+        {projectId ? "Update Project" : "Create New Project"}
       </Button>
     </Form>
   );

@@ -6,18 +6,17 @@ const api = axios.create({
   baseURL: BASE_URL
 });
 
-// api.interceptors.request.use(config => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 const addAnnotation = async (formData) =>{
   try {
-    const response = await api.post(
-      BASE_URL,
+    const response = await api.post('',
       formData);
       return response.data;
   } catch (error) {

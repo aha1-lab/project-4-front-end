@@ -36,7 +36,7 @@ function ProjectDetails() {
 
           <Row>
             <Col sm={3}>
-              <ClassList />
+              <ClassList projectId={projectId} />
             </Col>
             <Col sm={4}>
               <DragAndDropFile projectId={projectId} />

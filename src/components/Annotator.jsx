@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
 
+
+const colors = [
+  "#FF0000", // Red
+  "#0000FF", // Blue
+  "#FFA500", // Orange
+  "#800080", // Purple
+  "#FFC0CB", // Pink
+  "#FFFF00", // Yellow
+  "#A52A2A", // Brown
+  "#00FFFF", // Cyan
+  "#FF6347", // Tomato
+  "#4B0082"  // Indigo
+];
 function Annotator({ sourceImage, boxesList, setBoxesList }) {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [isPressing, setIsPressing] = useState(false);
-//   const [boxesList, setBoxesList] = useState([]);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
-  const [scaler, setScaler] = useState({ x: 0, y: 0 });
   const imageReference = React.useRef(null);
   const containerReference = React.useRef(null);
 
@@ -66,9 +77,9 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
           x2:x2,
           y2:y2,
           imageId: sourceImage.id,
-          classId: "",
-          className: "",
-          color: color,
+          classId: null,
+          id: null,
+          // color: box.id ? colors[box.classId] : 'green'
         }
         setBoxesList([...boxesList, newBox]);
       }
@@ -162,7 +173,7 @@ function Annotator({ sourceImage, boxesList, setBoxesList }) {
                 (imageReference.current?.getBoundingClientRect().height /
                   imageSize.height || 1)
               }px`,
-              border: `2px solid ${box.color}`,
+              border: `2px solid red`,
               pointerEvents: "none",
             }}
           />

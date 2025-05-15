@@ -1,15 +1,19 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 
-function BoundingBoxDetails({ box, classes, handleUpdateBoxClass, boxIndex, deleteBox }) {
-
-  const handleClassChange = (event)=>{
-      const index = event.target.selectedIndex - 1;
-      box.color = classes[index].color;
-      handleUpdateBoxClass(boxIndex, index);
-  }
-
-  const handleDelete = ()=>{
+function BoundingBoxDetails({
+  box,
+  classes,
+  handleUpdateBoxClass,
+  boxIndex,
+  deleteBox,
+}) {
+  const handleClassChange = (event) => {
+    const index = event.target.selectedIndex;
+    box.color = "red";
+    handleUpdateBoxClass(boxIndex, index);
+  };
+  const handleDelete = () => {
     deleteBox(boxIndex);
   };
 
@@ -20,12 +24,16 @@ function BoundingBoxDetails({ box, classes, handleUpdateBoxClass, boxIndex, dele
           <span>
             ({box.x1},{box.y1}) ({box.x2},{box.y2})
           </span>
-          <select onChange={handleClassChange} value={box.className}>
+          <select
+            disabled={!!box.classId}
+            onChange={handleClassChange}
+            value={
+              box.classId && classes.find((cls) => cls.id === box.classId).className || ""
+            }
+          >
             <option></option>
-            {classes.map((cls, index) => (
-                <option key={index}>
-                  {cls.name}
-                </option>
+            {classes.map((cls) => (
+              <option key={cls.id}>{cls.className}</option>
             ))}
           </select>
         </div>
