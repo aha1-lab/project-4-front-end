@@ -11,7 +11,7 @@ import CreateProject from "./pages/CreateProject";
 import ProjectList from "./pages/ProjectList";
 import ProjectDetails from "./pages/ProjectDetails";
 import ImageAnnotation from "./pages/ImageAnnotation";
-
+import setTheme from "./components/setTheme";
 
 
 function App() {
@@ -20,6 +20,11 @@ function App() {
   useEffect(() => {
     const htmlElement = document.querySelector('html');
     htmlElement.setAttribute('data-bs-theme', darkMode ? 'dark' : 'light');
+
+    // save the selected theme
+    const savedTheme = localStorage.getItem("selectedTheme") || "bootstrap";
+    setTheme(savedTheme);
+
   }, [darkMode]);
 
   const toggleTheme = () => {

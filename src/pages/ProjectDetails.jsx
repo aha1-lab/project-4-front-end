@@ -31,21 +31,21 @@ function ProjectDetails() {
       {projectDetails && (
         <>
           <h1>{projectDetails.name}</h1>
-          <h2>{projectDetails.type}</h2>
-          <h2>{projectDetails.description}</h2>
+          <h3>Project Type: {projectDetails.type}</h3>
+          <p>{projectDetails.description}</p>
 
           <Row>
             <Col sm={3}>
               <ClassList projectId={projectId} />
             </Col>
-            <Col sm={4}>
+            <Col sm={5}>
               <DragAndDropFile projectId={projectId} />
             </Col>
-            <Col sm={2} >
-              <Button className="mt-2">Edit Project</Button>
-              <Button className="mt-2">Delete Project</Button>
-              <Button className="mt-2" onClick={handleImage}>Annotate Images</Button>
-              <Button className="mt-2">Train Model</Button>
+            <Col sm={3} className="dropzone">
+              <Button className="mt-2 w-100" variant="success">Edit Project</Button>
+              <Button className="mt-2 w-100 btn btn-danger" >Delete Project</Button>
+              <Button className="mt-2 w-100" onClick={handleImage} variant="success">Annotate Images</Button>
+              <Button className="mt-2 w-100" variant="success">Train Model</Button>
             </Col>
           </Row>
         </>

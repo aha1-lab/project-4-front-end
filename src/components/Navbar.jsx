@@ -10,6 +10,9 @@ import {
   Form,
 } from "react-bootstrap";
 
+import ThemeSelector from "./ThemeSelector";
+
+
 function Navbar({ toggleTheme, darkMode }) {
   const { user, logout } = useContext(authContext);
 
@@ -44,6 +47,7 @@ function Navbar({ toggleTheme, darkMode }) {
         <Form>
           <Form.Check type="switch" id="custom-switch" onClick={toggleTheme} />
         </Form>
+          <ThemeSelector/>
         {user && (
           <button className="btn btn-danger" onClick={logout}>
             Logout
