@@ -6,6 +6,8 @@ import { getAnnotationList } from "../services/annotationService";
 import { getIndex } from "../services/imageService";
 import { askAiToAnnotate } from "../services/aiAnnotations";
 import NavigateBetweenImages from "../components/NavigateBetweenImages";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Flex, Spin } from 'antd';
 
 function AIAnnnotation() {
   const [formData, setFormData] = useState({
@@ -20,7 +22,7 @@ function AIAnnnotation() {
   const [currentImage, setCurrentImage] = useState(null);
   const [classDescrition, setClassDescription] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const getImageList = async () => {
     try {
@@ -56,15 +58,22 @@ function AIAnnnotation() {
 
   const handleRequest = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const data = {};
     classDescrition.forEach((cls) => {
-      data[cls.className] = cls.description;
+      data[cls.description] = cls.className;
     });
-    data["imagePath"] = currentImage.imageName;
-    const response = await askAiToAnnotate(data);
-    console.log(response);
+    try {
+      data["imagePath"] = currentImage.imageName;
+      const response = await askAiToAnnotate(data);
+      setCurrentImage(response);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
   };
   return (
+    !loading ?
     <div>
       {imageList && (
         <>
@@ -76,17 +85,6 @@ function AIAnnnotation() {
             imageList={imageList}
             projectId={projectId}
           />
-          <Row>
-            <div className="mt-auto">
-              <Button
-                className="position-relative mb-3"
-                variant="success"
-                onClick={() => navigate(`/projects/${projectId}`)}
-              >
-                Back to project
-              </Button>
-            </div>
-          </Row>
           <Row>
             {currentImage && (
               <Annotator
@@ -157,11 +155,15 @@ function AIAnnnotation() {
               >
                 Submit request
               </Button>
+              <Button className="mt-3" variant="warning">
+                Annotate all images
+              </Button>
             </Form>
           </Row>
         </>
       )}
-    </div>
+    </div>:
+    <Spin fullscreen="true" indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
   );
 }
 

@@ -46,7 +46,7 @@ const getImageDetails = async (projectId, imageId) => {
 };
 
 
-const deleteImage = async (projectId) => {
+const deleteImage = async (projectId, imageId) => {
   try {
     const response = await api.delete(`/${projectId}/images/${imageId}`);
     return response.data;

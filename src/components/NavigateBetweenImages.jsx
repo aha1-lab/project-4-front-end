@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { getAnnotationList } from "../services/annotationService";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import { deleteImage } from "../services/imageService";
+import { getIndex } from "../services/imageService";
 
 function NavigateBetweenImages({
   setCurrentImageIndex,
@@ -10,8 +12,12 @@ function NavigateBetweenImages({
   currentImageIndex,
   imageList,
   projectId,
+  setImageList,
 }) {
+  const [message, setMessage] = useState();
   const navigate = useNavigate();
+  const [show, setShow] = useState(true);
+
   const goLeft = async () => {
     if (currentImageIndex > 0) {
       const newImageIndex = currentImageIndex - 1;
@@ -45,45 +51,81 @@ function NavigateBetweenImages({
     }
   };
 
-  return (
-    <Row>
-      <div className="mt-auto">
-        <Button
-          className="position-relative"
-          onClick={() => navigate(`/projects/${projectId}`)}
-        >
-          Back to project
-        </Button>
+  const handleDeleteImage = async () => {
+    try {
+      // console.log(imageList[currentImageIndex].id);
+      const response = await deleteImage(
+        projectId,
+        imageList[currentImageIndex].id
+      );
+      let list = await getIndex(projectId);
+      setImageList(list);
+      const newImageIndex = currentImageIndex - 1;
+      setCurrentImageIndex(newImageIndex);
+      setCurrentImage(imageList[newImageIndex]);
+      if (setBoxesList) {
+        setBoxesList([]);
+        const annotationList = await getAnnotationList(
+          imageList[newImageIndex].id
+        );
+        setBoxesList(annotationList);
+      }
+      setMessage("Delete success");
+      setShow(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  return (
+    <div className="mt-auto">
+      {message && (
+        <Alert variant="success" onClose={() => setShow(false)} dismissible>
+          {message}
+        </Alert>
+      )}
+      <div
+        className="d-flex align-items-center flex-column"
+        style={{ gap: "0.5rem" }}
+      >
         <div
-          className="d-flex align-items-center flex-column"
+          className="d-flex align-items-center justify-content-center"
           style={{ gap: "0.5rem" }}
         >
-          <div
-            className="d-flex align-items-center justify-content-center"
-            style={{ gap: "0.5rem" }}
+          <Button
+            className="position-relative me-5"
+            variant="success"
+            onClick={() => navigate(`/projects/${projectId}`)}
           >
-            <Button
-              size="lg"
-              variant="outline-light"
-              onClick={goLeft}
-              disabled={currentImageIndex === 0}
-            >
-              ⬅️
-            </Button>
-            {currentImageIndex + 1} of {imageList.length}
-            <Button
-              size="lg"
-              variant="outline-light"
-              onClick={goRight}
-              disabled={currentImageIndex === imageList.length - 1}
-            >
-              ➡️
-            </Button>
-          </div>
+            Back to project
+          </Button>
+          <Button
+            size="lg"
+            variant="outline-light"
+            onClick={goLeft}
+            disabled={currentImageIndex === 0}
+          >
+            ⬅️
+          </Button>
+          {currentImageIndex + 1} of {imageList.length}
+          <Button
+            size="lg"
+            variant="outline-light"
+            onClick={goRight}
+            disabled={currentImageIndex === imageList.length - 1}
+          >
+            ➡️
+          </Button>
+          <Button
+            className="position-relative ms-5"
+            variant="danger"
+            onClick={handleDeleteImage}
+          >
+            Delete Image
+          </Button>
         </div>
       </div>
-    </Row>
+    </div>
   );
 }
 

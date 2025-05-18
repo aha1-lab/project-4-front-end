@@ -17,7 +17,7 @@ function Navbar({ toggleTheme, darkMode }) {
   const { user, logout } = useContext(authContext);
 
   return (
-    <NavbarBS sticky="top" className={"shadow-lg mb-3"}>
+    <NavbarBS  className={"shadow-lg mb-3"}>
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>

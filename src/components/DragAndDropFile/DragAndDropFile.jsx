@@ -3,9 +3,12 @@ import { Button } from "react-bootstrap";
 import "./DragAndDropFile.css";
 import { useDropzone } from "react-dropzone";
 import { addImage } from "../../services/imageService";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Flex, Spin } from 'antd';
 
 function DragAndDropFile({ projectId }) {
   const [files, setFiles] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(acceptedFiles);
@@ -16,6 +19,7 @@ function DragAndDropFile({ projectId }) {
 
   const handleUpload = async () => {
     try {
+      setLoading(true);
       const formData = new FormData();
       files.forEach((file) => {
         formData.append("files[]", file); 
@@ -25,6 +29,7 @@ function DragAndDropFile({ projectId }) {
       console.log(response);
 
       setFiles(null);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +39,7 @@ function DragAndDropFile({ projectId }) {
     setFiles(null);
   };
   return (
+    !loading ?
     <>
       {!files && (
         <div className="dropzone" {...getRootProps()}>
@@ -60,7 +66,8 @@ function DragAndDropFile({ projectId }) {
           <Button onClick={handleDelete}>❌</Button>
         </>
       )}
-    </>
+    </> :
+    <Spin fullscreen="true" indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
   );
 }
 

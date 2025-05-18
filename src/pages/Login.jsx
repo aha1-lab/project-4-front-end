@@ -3,13 +3,17 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { authContext } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 function Login() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+
+
+  const [errorStatus, setErrorStatus] = useState();
 
   const { validateToken } = useContext(authContext);
   const navigate = useNavigate();
@@ -37,12 +41,18 @@ function Login() {
       validateToken();
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setErrorStatus(err.response.data.error);
+      console.log(err.response.data.error);
     }
   }
 
   return (
     <div>
+      {errorStatus && (
+        <Alert variant="danger" dismissible>
+          {errorStatus}
+        </Alert>
+      )}
       <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">

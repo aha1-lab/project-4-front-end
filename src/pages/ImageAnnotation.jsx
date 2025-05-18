@@ -13,7 +13,6 @@ import { getClassIndex } from "../services/classesService";
 
 import NavigateBetweenImages from "../components/NavigateBetweenImages";
 
-
 function ImageAnnotation() {
   const { projectId } = useParams();
   const [boxesList, setBoxesList] = useState([]);
@@ -21,7 +20,6 @@ function ImageAnnotation() {
   const [currentImage, setCurrentImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [classes, setClasses] = useState(null);
-  const navigate = useNavigate();
 
   const getImageList = async () => {
     try {
@@ -85,86 +83,20 @@ function ImageAnnotation() {
     );
     setBoxesList(annotationList);
   };
-  const goLeft = async () => {
-    if (currentImageIndex > 0) {
-      const newImageIndex = currentImageIndex - 1;
-      setCurrentImageIndex(newImageIndex);
-      setCurrentImage(imageList[newImageIndex]);
-      setBoxesList([]);
-      try {
-        const annotationList = await getAnnotationList(
-          imageList[newImageIndex].id
-        );
-        setBoxesList(annotationList);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-  const goRight = async () => {
-    if (currentImageIndex < imageList.length - 1) {
-      const newImageIndex = currentImageIndex + 1;
-      setCurrentImageIndex(newImageIndex);
-      setCurrentImage(imageList[newImageIndex]);
-      setBoxesList([]);
-      const annotationList = await getAnnotationList(
-        imageList[newImageIndex].id
-      );
-      setBoxesList(annotationList);
-    }
-  };
 
   return (
     <div>
       {imageList && (
         <>
-        <NavigateBetweenImages
-          setCurrentImageIndex = {setCurrentImageIndex}
-          setCurrentImage = {setCurrentImage}
-          setBoxesList = {setBoxesList}
-          currentImageIndex = {currentImageIndex}
-          imageList = {imageList}
-          projectId = {projectId}
-        />
-
-          {/* <Row>
-            <div className="mt-auto">
-              <Button
-                className="position-relative"
-                onClick={() => navigate(`/projects/${projectId}`)}
-              >
-                Back to project
-              </Button>
-
-              <div
-                className="d-flex align-items-center flex-column"
-                style={{ gap: "0.5rem" }}
-              >
-                <div
-                  className="d-flex align-items-center justify-content-center"
-                  style={{ gap: "0.5rem" }}
-                >
-                  <Button
-                    size="lg"
-                    variant="outline-light"
-                    onClick={goLeft}
-                    disabled={currentImageIndex === 0}
-                  >
-                    ⬅️
-                  </Button>
-                  {currentImageIndex + 1} of {imageList.length}
-                  <Button
-                    size="lg"
-                    variant="outline-light"
-                    onClick={goRight}
-                    disabled={currentImageIndex === imageList.length - 1}
-                  >
-                    ➡️
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Row> */}
+          <NavigateBetweenImages
+            setCurrentImageIndex={setCurrentImageIndex}
+            setCurrentImage={setCurrentImage}
+            setBoxesList={setBoxesList}
+            currentImageIndex={currentImageIndex}
+            imageList={imageList}
+            projectId={projectId}
+            setImageList = {setImageList}
+          />
           <Row>
             <Col sm={9}>
               {currentImage && (
