@@ -9,9 +9,9 @@ function BoundingBoxDetails({
   deleteBox,
 }) {
   const handleClassChange = (event) => {
-    const index = event.target.selectedIndex;
+    const classId = event.target.value;
     box.color = "red";
-    handleUpdateBoxClass(boxIndex, index);
+    handleUpdateBoxClass(boxIndex, classId);
   };
   const handleDelete = () => {
     deleteBox(boxIndex);
@@ -27,13 +27,13 @@ function BoundingBoxDetails({
           <select
             disabled={!!box.classId}
             onChange={handleClassChange}
-            value={
-              box.classId && classes.find((cls) => cls.id === box.classId).className || ""
-            }
+            value={box.classId || ""}
           >
             <option></option>
             {classes.map((cls) => (
-              <option key={cls.id}>{cls.className}</option>
+              <option key={cls.id} value={cls.id}>
+                {cls.className}
+              </option>
             ))}
           </select>
         </div>

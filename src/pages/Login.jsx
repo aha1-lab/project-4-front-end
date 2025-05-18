@@ -1,72 +1,81 @@
-import {useState, useContext} from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router'
-import { authContext } from '../context/AuthContext'
+import { useState, useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { authContext } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
 function Login() {
-      const [formData, setFormData] = useState({
-          username:"",
-          password:""
-      })
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
-      const {validateToken} = useContext(authContext)
-      const navigate = useNavigate()
+  const { validateToken } = useContext(authContext);
+  const navigate = useNavigate();
 
-      function handleChange(e){
-        setFormData({...formData,[e.target.name]:e.target.value})
-    }
-
-    async function handleSubmit(e){
-      e.preventDefault()
-      try{
-          const response = await axios.post(`http://127.0.0.1:5000/users/sign-in`,formData)
-          // console.log("AAAA ",response.data)
-          localStorage.setItem("token",response.data.token)
-          const decoded = jwtDecode(response.data.token)
-          // console.log("Decoded JWT: ", decoded)
-          const userInfo = {
-            username: decoded.payload.username,
-            id: decoded.payload.id,
-          };
-          localStorage.setItem("userInfo", JSON.stringify(userInfo));
-          validateToken()
-          navigate("/")
-
-      }
-      catch(err){
-          console.log(err)
-      }
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:5000/users/sign-in`,
+        formData
+      );
+      // console.log("AAAA ",response.data)
+      localStorage.setItem("token", response.data.token);
+      const decoded = jwtDecode(response.data.token);
+      // console.log("Decoded JWT: ", decoded)
+      const userInfo = {
+        username: decoded.payload.username,
+        id: decoded.payload.id,
+      };
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      validateToken();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div>
       <h1>Login</h1>
-
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input
-         type="text"
-         name='username'
-         id='username'
-         value={formData.username}
-         onChange={handleChange}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="username" className="mt-3">
+            Username
+          </Form.Label>
+          <Form.Control
+            className="form-control"
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            onChange={handleChange}
           />
-
-        <label htmlFor="password">Password:</label>
-        <input
-         type="password"
-         name='password'
-         id='password'
-         value={formData.password}
-         onChange={handleChange}
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="password" className=" mt-3">
+            Password:
+          </Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleChange}
           />
-
-          <button>Submit</button>
-      </form>
+        </Form.Group>
+        <Button className="mt-3" variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

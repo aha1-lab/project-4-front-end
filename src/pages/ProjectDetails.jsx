@@ -26,6 +26,9 @@ function ProjectDetails() {
   const handleImage = ()=>{
     navigate(`/projects/${projectId}/images`)
   }
+  const handleImageAi = ()=>{
+    navigate(`/projects/${projectId}/images/ai`)
+  }
   return (
     <>
       {projectDetails && (
@@ -45,6 +48,7 @@ function ProjectDetails() {
               <Button className="mt-2 w-100" variant="success">Edit Project</Button>
               <Button className="mt-2 w-100 btn btn-danger" >Delete Project</Button>
               <Button className="mt-2 w-100" onClick={handleImage} variant="success">Annotate Images</Button>
+              <Button className="mt-2 w-100" onClick={handleImageAi} variant="success">Use AI</Button>
               <Button className="mt-2 w-100" variant="success">Train Model</Button>
             </Col>
           </Row>

@@ -109,7 +109,7 @@ function ClassList({ projectId }) {
             Close
           </Button>
           <Button variant="primary" onClick={handlAddClass}>
-            Save Changes
+            Add Class
           </Button>
         </Modal.Footer>
       </Modal>

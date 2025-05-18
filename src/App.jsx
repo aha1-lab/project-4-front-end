@@ -12,6 +12,7 @@ import ProjectList from "./pages/ProjectList";
 import ProjectDetails from "./pages/ProjectDetails";
 import ImageAnnotation from "./pages/ImageAnnotation";
 import setTheme from "./components/setTheme";
+import AIAnnnotation from "./pages/AIAnnnotation";
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/projects" element={<ProjectList/>}/>
                   <Route path="/projects/:projectId" element={<ProjectDetails/>}/>
                   <Route path="/projects/:projectId/images" element={<ImageAnnotation/>}/>
+                  <Route path="/projects/:projectId/images/ai" element={<AIAnnnotation/>}/>
                 </Routes>
               </main>
             </div>

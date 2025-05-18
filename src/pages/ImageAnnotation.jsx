@@ -11,6 +11,9 @@ import {
 import { getIndex } from "../services/imageService";
 import { getClassIndex } from "../services/classesService";
 
+import NavigateBetweenImages from "../components/NavigateBetweenImages";
+
+
 function ImageAnnotation() {
   const { projectId } = useParams();
   const [boxesList, setBoxesList] = useState([]);
@@ -115,7 +118,16 @@ function ImageAnnotation() {
     <div>
       {imageList && (
         <>
-          <Row>
+        <NavigateBetweenImages
+          setCurrentImageIndex = {setCurrentImageIndex}
+          setCurrentImage = {setCurrentImage}
+          setBoxesList = {setBoxesList}
+          currentImageIndex = {currentImageIndex}
+          imageList = {imageList}
+          projectId = {projectId}
+        />
+
+          {/* <Row>
             <div className="mt-auto">
               <Button
                 className="position-relative"
@@ -152,7 +164,7 @@ function ImageAnnotation() {
                 </div>
               </div>
             </div>
-          </Row>
+          </Row> */}
           <Row>
             <Col sm={9}>
               {currentImage && (
