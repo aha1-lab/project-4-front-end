@@ -1,5 +1,6 @@
 import {useContext,useEffect,useState} from 'react'
 import axios from 'axios'
+import ClassList from '../components/ClassList';
 
 function ProjectDetails() {
 
@@ -8,7 +9,7 @@ function ProjectDetails() {
     const [error, setError] = useState(null)
 
     const [selectedFile, setSelectedFile] = useState(null);
-    
+
     const [previewUrl, setPreviewUrl] = useState(null);
 
     useEffect(() => {
@@ -77,9 +78,11 @@ function ProjectDetails() {
 
     } 
 
-    <button>Add Class</button>
-
+    <ClassList/>
+    <br/>
+    <br/>
     <button onClick={handleUpload}>Add Image</button>      
+    <br/>
     <input type='file' accept='image/*' onChange={handleFileChange}/>
     </>
   )
