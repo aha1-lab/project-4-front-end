@@ -10,12 +10,14 @@ import {
   Form,
 } from "react-bootstrap";
 
+import ThemeSelector from "./ThemeSelector";
+
 
 function Navbar({ toggleTheme, darkMode }) {
   const { user, logout } = useContext(authContext);
 
   return (
-    <NavbarBS sticky="top" className={"shadow-lg mb-3"}>
+    <NavbarBS  className={"shadow-lg mb-3"}>
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
@@ -31,10 +33,21 @@ function Navbar({ toggleTheme, darkMode }) {
               </Nav.Link>
             </>
           )}
+          {user && (
+            <>
+              <Nav.Link to="/projects" as={NavLink}>
+                Projects
+              </Nav.Link>
+              <Nav.Link to="/createProject" as={NavLink}>
+                Creare Project
+              </Nav.Link>
+            </>
+          )}
         </Nav>
         <Form>
           <Form.Check type="switch" id="custom-switch" onClick={toggleTheme} />
         </Form>
+          <ThemeSelector/>
         {user && (
           <button className="btn btn-danger" onClick={logout}>
             Logout

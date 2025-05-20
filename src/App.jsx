@@ -2,25 +2,37 @@ import { Routes, Route } from "react-router";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
+import Homepage from "./pages/Homepage";
 
 import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 import CreateProject from "./pages/CreateProject";
+import ProjectList from "./pages/ProjectList";
+import ProjectDetails from "./pages/ProjectDetails";
+import ImageAnnotation from "./pages/ImageAnnotation";
+import setTheme from "./components/setTheme";
+import AIAnnnotation from "./pages/AIAnnnotation";
 
 
 function App() {
   const [darkMode, setDarkMode] = useLocalStorage("darkMode", false);
-  const [searchName, setSearchName] = useState("")
 
   useEffect(() => {
     const htmlElement = document.querySelector('html');
     htmlElement.setAttribute('data-bs-theme', darkMode ? 'dark' : 'light');
+
+    // save the selected theme
+    const savedTheme = localStorage.getItem("selectedTheme") || "bootstrap";
+    setTheme(savedTheme);
+
   }, [darkMode]);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
+
+
 
   return (
     <div className={`App ${darkMode ? "theme-dark" : "theme-light"}`}>
@@ -35,17 +47,26 @@ function App() {
               <main className="p-3">
                 
                 <Routes>
+                  <Route path="/" element={<Homepage/>} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/create" element={<CreateProject/>}/>
+                  <Route path="/createProject" element={<CreateProject/>}/>
+                  <Route path="/createProject/:projectId" element={<CreateProject/>}/>
+                  <Route path="/projects" element={<ProjectList/>}/>
+                  <Route path="/projects/:projectId" element={<ProjectDetails/>}/>
+                  <Route path="/projects/:projectId/images" element={<ImageAnnotation/>}/>
+                  <Route path="/projects/:projectId/images/ai" element={<AIAnnnotation/>}/>
                 </Routes>
               </main>
             </div>
           </div>
         </div>
       </Container>
+      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+    </div>
     </div>
   );
+
 }
 
 export default App;
