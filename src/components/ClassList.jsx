@@ -69,13 +69,13 @@ function ClassList({ projectId }) {
           classList.map((cls) => (
             <li key={cls.id}>
               <div className="d-flex justify-content-between">
-                {cls.className}
+                <p>{cls.className}</p>
                 <Button
-                  className="btn-close p-1 bd-highlight "
+                  className="btn btn-danger"
                   onClick={() => {
                     handleDeleteClass(cls.id);
                   }}
-                ></Button>
+                >X</Button>
               </div>
             </li>
           ))}

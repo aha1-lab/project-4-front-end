@@ -4,6 +4,8 @@ import { getProjectDetails } from "../services/ProjectService";
 import { Button, Row, Col } from "react-bootstrap";
 import DragAndDropFile from "../components/DragAndDropFile/DragAndDropFile";
 import ClassList from "../components/ClassList";
+import { deleteProject } from "../services/ProjectService";
+
 
 function ProjectDetails() {
   const { projectId } = useParams();
@@ -29,6 +31,17 @@ function ProjectDetails() {
   const handleImageAi = ()=>{
     navigate(`/projects/${projectId}/images/ai`)
   }
+
+  const handleDelete = async () => {
+    try {
+      // Use project instead of project2 if that's your prop
+      await deleteProject(projectId);
+      navigate('/projects');
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
   return (
     <>
       {projectDetails && (
@@ -45,8 +58,8 @@ function ProjectDetails() {
               <DragAndDropFile projectId={projectId} />
             </Col>
             <Col sm={3} className="dropzone">
-              <Button className="mt-2 w-100" variant="success">Edit Project</Button>
-              <Button className="mt-2 w-100 btn btn-danger" >Delete Project</Button>
+                <Button className="mt-2 w-100" variant="success" onClick={()=>{navigate(`/createProject/${projectId}`)}}>Edit Project</Button>
+              <Button className="mt-2 w-100 btn btn-danger" onClick={handleDelete} >Delete Project</Button>
               <Button className="mt-2 w-100" onClick={handleImage} variant="success">Annotate Images</Button>
               <Button className="mt-2 w-100" onClick={handleImageAi} variant="success">Use AI Tools</Button>
               <Button className="mt-2 w-100" variant="success">Train Model</Button>

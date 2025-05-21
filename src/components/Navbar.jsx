@@ -5,8 +5,6 @@ import {
   Navbar as NavbarBS,
   Nav,
   Container,
-  Button,
-  NavDropdown,
   Form,
 } from "react-bootstrap";
 
@@ -44,12 +42,12 @@ function Navbar({ toggleTheme, darkMode }) {
             </>
           )}
         </Nav>
-        <Form>
+        <Form className="me-2">
           <Form.Check type="switch" id="custom-switch" onClick={toggleTheme} />
         </Form>
           <ThemeSelector/>
         {user && (
-          <button className="btn btn-danger" onClick={logout}>
+          <button className="btn btn-danger ms-2" onClick={logout}>
             Logout
           </button>
         )}

@@ -11,6 +11,12 @@ const projectTypes = [
   "image_classification",
   "image_segmentation",
 ];
+const typeObject ={
+    'Object Detection' : "object_detection",
+    'Image Classification':"image_classification",
+    'Image Segmentation':"image_segmentation"
+}
+
 
 const initProjectFoprm =
     {
@@ -30,6 +36,7 @@ function CreateProject() {
   const projectDetaisl = async ()=>{
     try {
       const response = await getProjectDetails(projectId);
+      response.type = typeObject[response.type];
       setProjectForm(response);
     } catch (error) {
       console.log(error);
@@ -85,7 +92,7 @@ function CreateProject() {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label htmlFor="description" className=" mt-3">
-          Project Name:
+          Project Description:
         </Form.Label>
         <Form.Control
           type="text"

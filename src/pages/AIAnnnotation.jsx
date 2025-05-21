@@ -155,7 +155,7 @@ function AIAnnnotation() {
               >
                 Submit request
               </Button>
-              <Button className="mt-3" variant="warning">
+              <Button className="mt-3 ms-3" variant="warning">
                 Annotate all images
               </Button>
             </Form>

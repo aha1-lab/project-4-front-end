@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import Homepage from "./pages/Homepage";
 
 import { Container } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useLocalStorage from "use-local-storage";
 import CreateProject from "./pages/CreateProject";
 import ProjectList from "./pages/ProjectList";
@@ -13,6 +13,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import ImageAnnotation from "./pages/ImageAnnotation";
 import setTheme from "./components/setTheme";
 import AIAnnnotation from "./pages/AIAnnnotation";
+import { authContext } from "./context/AuthContext";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
     setDarkMode(!darkMode);
   };
 
+  const {user} = useContext(authContext)
 
 
   return (
@@ -50,13 +52,18 @@ function App() {
                   <Route path="/" element={<Homepage/>} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/createProject" element={<CreateProject/>}/>
-                  <Route path="/createProject/:projectId" element={<CreateProject/>}/>
-                  <Route path="/projects" element={<ProjectList/>}/>
-                  <Route path="/projects/:projectId" element={<ProjectDetails/>}/>
-                  <Route path="/projects/:projectId/images" element={<ImageAnnotation/>}/>
-                  <Route path="/projects/:projectId/images/ai" element={<AIAnnnotation/>}/>
                 </Routes>
+
+                 {user ? (
+                    <Routes>
+                      <Route path="/createProject" element={<CreateProject/>}/>
+                      <Route path="/createProject/:projectId" element={<CreateProject/>}/>
+                      <Route path="/projects" element={<ProjectList/>}/>
+                      <Route path="/projects/:projectId" element={<ProjectDetails/>}/>
+                      <Route path="/projects/:projectId/images" element={<ImageAnnotation/>}/>
+                      <Route path="/projects/:projectId/images/ai" element={<AIAnnnotation/>}/>
+                    </Routes>
+                  ) : <h1>  </h1>}
               </main>
             </div>
           </div>
